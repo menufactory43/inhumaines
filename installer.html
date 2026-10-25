@@ -84,6 +84,10 @@
     .encart { margin-top: 12px; padding: 13px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
     .encart.ambre { background: var(--ambre-clair); color: #92400e; }
     .encart.vert { background: var(--vert-clair); color: #166534; }
+    .encart.testflight { margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; justify-content: space-between; }
+    .encart.testflight p { margin: 0; flex: 1 1 320px; }
+    .encart.testflight a:not(.bouton) { color: inherit; }
+    .ou { margin: 0 0 10px; color: var(--texte-3); font-size: 14px; font-weight: 600; }
 
     h2 { font-size: 26px; letter-spacing: -.03em; margin: 64px 0 16px; }
     .faq { display: grid; gap: 10px; }
@@ -146,6 +150,11 @@
     </div>
 
     <section class="volet" id="ios">
+      <div class="encart vert testflight">
+        <p><b>Nouveau : la vraie app iPhone et iPad, en bêta.</b> Installez d'abord l'app <a href="https://apps.apple.com/app/testflight/id899247664">TestFlight</a> d'Apple, puis ouvrez ce lien sur l'iPhone. Elle se met à jour toute seule.</p>
+        <a class="bouton primaire" href="https://testflight.apple.com/join/5Brqw83Q">Rejoindre la bêta TestFlight</a>
+      </div>
+      <p class="ou">Ou, sans TestFlight, installez la web app :</p>
       <ol class="etapes">
         <li><p><b>Ouvrez le jeu dans Safari.</b> Touchez « Ouvrir le jeu » ci-dessus : c'est le jeu qu'on installe, pas cette page.<small>Arrivé par WhatsApp, Messenger ou Instagram ? Touchez « ⋯ » puis « Ouvrir dans Safari » (ou « Ouvrir dans le navigateur »).</small></p><span class="ico">🧭</span></li>
         <li><p><b>Touchez le bouton Partager.</b> En bas de l'écran sur iPhone, en haut à droite sur iPad.<small>Avec iOS 26, il se cache parfois derrière « ⋯ », en bas à droite.</small></p>
