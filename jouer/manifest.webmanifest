@@ -1,0 +1,17 @@
+{
+  "name": "Ressources Inhumaines",
+  "short_name": "Inhumaines",
+  "description": "Vous êtes Ava, l'IA de conformité RH de Synergie. On est une famille 💜",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#111015",
+  "theme_color": "#111015",
+  "icons": [
+    { "src": "icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

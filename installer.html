@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Installer Ressources Inhumaines — guide de déploiement</title>
+  <meta name="description" content="Installer Ressources Inhumaines comme une app sur iPhone, Android ou ordinateur, en trois minutes. Gratuit, sans compte." />
+  <meta property="og:title" content="Installer Ressources Inhumaines" />
+  <meta property="og:description" content="Ava s'installe comme une vraie app : icône, plein écran, même hors ligne. Trois minutes, aucune DSI." />
+  <meta property="og:image" content="https://menufactory43.github.io/inhumaines/img/tickets.jpg" />
+  <meta name="theme-color" content="#fbfbfc" />
+  <link rel="icon" type="image/png" href="jouer/icones/icone-192.png" />
+  <link rel="apple-touch-icon" href="jouer/icones/icone-180.png" />
+  <style>
+    /* Synergie OS : le même système de design que le jeu et que la page d'accueil */
+    :root {
+      --fond: #fbfbfc; --panneau: #fff; --cote: #f4f3f7; --bord: #e8e6ef;
+      --texte: #1d1b26; --texte-2: #5b576d; --texte-3: #9692a8;
+      --violet: #7c3aed; --violet-clair: #f3effe; --vert: #16a34a; --vert-clair: #ecfdf3; --ambre: #d97706; --ambre-clair: #fffbeb;
+      --degrade: linear-gradient(135deg, #8b5cf6, #ec4899);
+      --ombre: 0 1px 2px rgba(20, 16, 40, .06), 0 2px 8px rgba(20, 16, 40, .04);
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; color: var(--texte); background: var(--fond);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; overflow-x: hidden; }
+    a { color: inherit; }
+    .page { max-width: 860px; margin: 0 auto; padding: 0 22px; }
+    .fond { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse at 20% 0%, #fdf2f8, transparent 50%), radial-gradient(ellipse at 90% 30%, #ede9fe, transparent 45%), var(--fond); }
+    nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(251, 251, 252, .75); border-bottom: 1px solid rgba(232, 230, 239, .7); }
+    nav .page { display: flex; align-items: center; gap: 18px; height: 58px; max-width: 1120px; }
+    .logo { display: flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: -.02em; text-decoration: none; white-space: nowrap; }
+    .logo i { width: 28px; height: 28px; border-radius: 8px; background: var(--degrade); color: #fff; display: grid; place-items: center; font-style: normal; font-size: 15px; }
+    nav .liens { display: flex; align-items: center; gap: 18px; margin-left: auto; font-size: 14px; color: var(--texte-2); }
+    nav .liens a { text-decoration: none; }
+    .bouton { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 10px; font: 600 14.5px/1 inherit;
+      font-family: inherit; text-decoration: none; border: 1px solid var(--bord); background: #fff; color: var(--texte); cursor: pointer; transition: transform .15s, box-shadow .15s; }
+    .bouton:hover { transform: translateY(-1px); box-shadow: var(--ombre); }
+    .bouton.primaire { background: var(--violet); border-color: var(--violet); color: #fff; box-shadow: 0 6px 20px rgba(124, 58, 237, .3); }
+    .bouton.grand { height: 48px; padding: 0 22px; font-size: 16px; border-radius: 12px; }
+    nav .bouton { height: 34px; font-size: 13.5px; }
+
+    header { text-align: center; padding: 56px 0 28px; }
+    .puce { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: var(--violet-clair);
+      color: var(--violet); font-size: 12.5px; font-weight: 700; letter-spacing: .14em; }
+    h1 { font-size: clamp(34px, 6vw, 58px); font-weight: 800; letter-spacing: -.04em; line-height: 1.02; margin: 18px 0 0; }
+    h1 span { background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .sous { color: var(--texte-2); font-size: 17px; line-height: 1.55; max-width: 600px; margin: 16px auto 0; }
+    .atouts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 22px; }
+    .atouts span { font-size: 13px; font-weight: 600; padding: 6px 11px; border-radius: 999px; background: #fff; border: 1px solid var(--bord); color: var(--texte-2); }
+
+    /* le lien du jeu, à ouvrir ou à copier */
+    .lien-jeu { display: flex; align-items: center; gap: 10px; margin: 26px auto 0; max-width: 560px; padding: 8px 8px 8px 14px; background: #fff;
+      border: 1px solid var(--bord); border-radius: 14px; box-shadow: var(--ombre); }
+    .lien-jeu code { flex: 1; min-width: 0; font: 13.5px var(--mono); color: var(--texte-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lien-jeu .bouton { height: 36px; font-size: 13.5px; flex: none; }
+
+    /* les onglets : un par appareil */
+    .onglets { display: flex; gap: 6px; padding: 5px; margin: 44px auto 0; width: fit-content; max-width: 100%; background: var(--cote); border-radius: 13px; }
+    .onglets button { border: 0; background: none; font: 600 14.5px inherit; font-family: inherit; color: var(--texte-2); padding: 9px 16px; border-radius: 9px; cursor: pointer; white-space: nowrap; }
+    .onglets button.on { background: #fff; color: var(--texte); box-shadow: var(--ombre); }
+    .onglets small { display: block; font-size: 11px; font-weight: 600; color: var(--violet); margin-top: 1px; }
+    .volet { display: none; margin-top: 22px; }
+    .volet.on { display: block; animation: entre .3s ease-out; }
+    @keyframes entre { from { opacity: 0; transform: translateY(6px); } }
+
+    .etapes { list-style: none; margin: 0; padding: 0; counter-reset: e; display: grid; gap: 10px; }
+    .etapes li { counter-increment: e; display: grid; grid-template-columns: 38px 1fr auto; gap: 14px; align-items: center; background: #fff;
+      border: 1px solid var(--bord); border-radius: 14px; padding: 14px 16px; box-shadow: var(--ombre); }
+    .etapes li::before { content: counter(e); width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 800;
+      font-size: 14px; color: var(--violet); background: var(--violet-clair); }
+    .etapes b { font-weight: 700; }
+    .etapes p { margin: 0; line-height: 1.5; font-size: 15px; }
+    .etapes p small { display: block; color: var(--texte-3); font-size: 13px; margin-top: 3px; }
+    .ico { display: grid; place-items: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 12px; background: var(--cote); font-size: 20px; color: var(--texte-2); }
+    .ico svg { width: 22px; height: 22px; }
+    .ico.app { padding: 0; background: none; }
+    .ico.app img { width: 44px; height: 44px; border-radius: 11px; box-shadow: 0 3px 10px rgba(124, 58, 237, .3); }
+    .ico.mini { font-size: 12.5px; font-weight: 700; color: var(--texte); }
+
+    .encart { margin-top: 12px; padding: 13px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
+    .encart.ambre { background: var(--ambre-clair); color: #92400e; }
+    .encart.vert { background: var(--vert-clair); color: #166534; }
+
+    h2 { font-size: 26px; letter-spacing: -.03em; margin: 64px 0 16px; }
+    .faq { display: grid; gap: 10px; }
+    details { background: #fff; border: 1px solid var(--bord); border-radius: 14px; padding: 0 16px; box-shadow: var(--ombre); }
+    summary { cursor: pointer; padding: 15px 0; font-weight: 700; font-size: 15px; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::after { content: "+"; color: var(--texte-3); font-weight: 600; }
+    details[open] summary::after { content: "–"; }
+    details p { margin: 0 0 15px; color: var(--texte-2); line-height: 1.55; font-size: 14.5px; }
+
+    .partager { margin: 64px 0 0; text-align: center; padding: 34px 22px; border-radius: 20px; background: #14121c; color: #e6e3f0; }
+    .partager h2 { margin: 0 0 8px; color: #fff; }
+    .partager p { margin: 0 auto 20px; color: #a6a1b8; max-width: 460px; line-height: 1.5; }
+    .partager .cta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    footer { border-top: 1px solid var(--bord); margin-top: 60px; padding: 26px 0 40px; color: var(--texte-3); font-size: 13px; }
+    footer .page { display: flex; flex-wrap: wrap; gap: 12px 26px; justify-content: space-between; max-width: 1120px; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: .3s;
+      background: #1d1b26; color: #fff; padding: 11px 16px; border-radius: 12px; font-size: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .25); }
+    .toast.vu { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 640px) {
+      nav .liens a:not(.bouton) { display: none; }
+      .logo span { display: none; }
+      .onglets button { padding: 8px 11px; font-size: 13.5px; }
+      .etapes li { grid-template-columns: 30px 1fr; padding: 13px; gap: 11px; }
+      .etapes li::before { width: 26px; height: 26px; font-size: 13px; }
+      .etapes .ico { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="fond"></div>
+  <nav>
+    <div class="page">
+      <a class="logo" href="./"><i>S</i> Synergie <span style="color:var(--texte-3);font-weight:600">· Ressources Inhumaines</span></a>
+      <div class="liens">
+        <a href="./">Accueil</a>
+        <a href="#faq">Questions</a>
+        <a class="bouton primaire" href="jouer/">▶ Jouer</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <header>
+      <span class="puce">ONBOARDING · MODULE 0</span>
+      <h1>Installez Ava<br /><span>sur votre écran d'accueil.</span></h1>
+      <p class="sous">Trois minutes, aucune DSI. Le jeu s'installe comme une vraie app : une icône, le plein écran, et il se relance même sans réseau.</p>
+      <div class="atouts"><span>Gratuit</span><span>Sans compte</span><span>Sans pub</span><span>Français · English</span><span>Sauvegarde sur l'appareil</span></div>
+      <div class="lien-jeu">
+        <code id="url">…/jouer/</code>
+        <button class="bouton" id="copier">Copier</button>
+        <a class="bouton primaire" href="jouer/">Ouvrir le jeu</a>
+      </div>
+    </header>
+
+    <div class="onglets" role="tablist">
+      <button data-volet="ios" role="tab">iPhone · iPad<small>Safari</small></button>
+      <button data-volet="android" role="tab">Android<small>Chrome</small></button>
+      <button data-volet="pc" role="tab">Ordinateur<small>Chrome · Edge · Safari</small></button>
+    </div>
+
+    <section class="volet" id="ios">
+      <ol class="etapes">
+        <li><p><b>Ouvrez le jeu dans Safari.</b> Touchez « Ouvrir le jeu » ci-dessus : c'est le jeu qu'on installe, pas cette page.<small>Arrivé par WhatsApp, Messenger ou Instagram ? Touchez « ⋯ » puis « Ouvrir dans Safari » (ou « Ouvrir dans le navigateur »).</small></p><span class="ico">🧭</span></li>
+        <li><p><b>Touchez le bouton Partager.</b> En bas de l'écran sur iPhone, en haut à droite sur iPad.<small>Avec iOS 26, il se cache parfois derrière « ⋯ », en bas à droite.</small></p>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M8 10H6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1h-2"/></svg></span></li>
+        <li><p><b>Choisissez « Sur l'écran d'accueil ».</b> Faites défiler la liste vers le bas si besoin.</p>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg></span></li>
+        <li><p><b>Laissez « Ouvrir comme app web » activé</b>, puis touchez <b>Ajouter</b>.</p><span class="ico mini">Ajouter</span></li>
+        <li><p><b>Lancez Inhumaines depuis l'écran d'accueil,</b> téléphone à l'horizontale. Bienvenue chez Synergie.</p><span class="ico app"><img src="jouer/icones/icone-180.png" alt="" /></span></li>
+      </ol>
+      <div class="encart ambre">🔕 <b>Pas de son ?</b> Le bouton silencieux de l'iPhone coupe la musique et la voix d'Ava. Basculez-le, puis touchez l'écran une fois.</div>
+    </section>
+
+    <section class="volet" id="android">
+      <ol class="etapes">
+        <li><p><b>Ouvrez le jeu dans Chrome.</b> Touchez « Ouvrir le jeu » ci-dessus : c'est le jeu qu'on installe, pas cette page.<small>Arrivé par une appli de messagerie ? Menu « ⋮ » puis « Ouvrir dans Chrome ».</small></p><span class="ico">🌐</span></li>
+        <li><p><b>Touchez le menu « ⋮ »</b> en haut à droite.</p><span class="ico" style="font-weight:800">⋮</span></li>
+        <li><p><b>Choisissez « Installer l'appli ».</b><small>Selon la version : « Ajouter à l'écran d'accueil », puis « Installer ». Sur Samsung Internet : menu « ≡ », « Ajouter la page à », « Écran d'accueil ».</small></p>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3"/></svg></span></li>
+        <li><p><b>Confirmez,</b> puis lancez Inhumaines depuis l'écran d'accueil, téléphone à l'horizontale.</p><span class="ico app"><img src="jouer/icones/icone-180.png" alt="" /></span></li>
+      </ol>
+      <div class="encart vert">✅ Chrome propose parfois lui-même l'installation, avec un bandeau en bas de l'écran. Dites oui.</div>
+    </section>
+
+    <section class="volet" id="pc">
+      <ol class="etapes">
+        <li><p><b>Ouvrez le jeu</b> avec le bouton « Ouvrir le jeu » ci-dessus.</p><span class="ico">🖥️</span></li>
+        <li><p><b>Chrome ou Edge :</b> cliquez sur l'icône d'installation à droite de la barre d'adresse, puis « Installer ».<small>Sinon : menu « ⋮ », « Caster, enregistrer et partager », « Installer la page en tant qu'appli ».</small></p>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 7.5v6M9.5 11l2.5 2.5 2.5-2.5"/></svg></span></li>
+        <li><p><b>Safari sur Mac :</b> menu « Fichier », puis « Ajouter au Dock ».</p><span class="ico mini">Fichier</span></li>
+        <li><p><b>Firefox :</b> pas d'installation, mais le jeu marche très bien dans un onglet. Passez en plein écran avec F11 (⌃⌘F sur Mac).</p><span class="ico">🦊</span></li>
+      </ol>
+      <div class="encart vert">⌨️ Sur ordinateur, tout se joue aussi au clavier : V pour valider, R pour refuser, ⌘K pour chercher.</div>
+    </section>
+
+    <h2 id="faq">Questions fréquentes</h2>
+    <div class="faq">
+      <details><summary>C'est vraiment gratuit ?</summary><p>Oui. Pas de compte, pas de pub, rien n'est envoyé nulle part. Synergie n'a même pas réussi à monétiser votre âme.</p></details>
+      <details><summary>Où est sauvegardée ma partie ?</summary><p>Sur votre appareil, automatiquement. Sur iPhone, l'app installée a sa propre mémoire : une partie commencée dans Safari ne la suit pas. Installez d'abord, jouez ensuite.</p></details>
+      <details><summary>Ça marche sans réseau ?</summary><p>Une fois le jeu lancé une première fois, oui : il se relance hors ligne. La musique et la voix d'Ava ont besoin du réseau pour se charger.</p></details>
+      <details><summary>Comment avoir la dernière version ?</summary><p>Rien à faire : relancez l'app avec du réseau, elle se met à jour toute seule.</p></details>
+      <details><summary>Il y a une version en anglais ?</summary><p>Yes. Dans le jeu, ouvrez Réglages ⚙️ et choisissez English. Ava vous parlera dans les deux langues.</p></details>
+      <details><summary>Comment désinstaller ?</summary><p>Appui long sur l'icône, puis « Supprimer l'app » (ou « Désinstaller »). Ava ne le prendra pas personnellement. Elle le notera, c'est tout.</p></details>
+    </div>
+
+    <div class="partager">
+      <h2>Partagez avec un collègue</h2>
+      <p>Il a lui aussi droit à son premier jour chez Synergie. Le jeu dure 30 jours ouvrés, il a 6 fins, et Ava sera désactivée le 14 décembre.</p>
+      <div class="cta">
+        <button class="bouton primaire grand" id="partager">💜 Envoyer le lien</button>
+        <a class="bouton grand" style="background:#23202f;border-color:#2a2638;color:#e6e3f0" href="jouer/">▶ Jouer maintenant</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="page">
+      <span>© 2026 Synergie SAS · Ressources Inhumaines, un jeu de bureau satirique</span>
+      <span>Ce guide a été validé par le service conformité. Le service conformité, c'est Ava.</span>
+    </div>
+  </footer>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // le bon onglet selon l'appareil
+    const ua = navigator.userAgent
+    const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+    const choisir = (id) => {
+      document.querySelectorAll(".onglets button").forEach((b) => b.classList.toggle("on", b.dataset.volet === id))
+      document.querySelectorAll(".volet").forEach((v) => v.classList.toggle("on", v.id === id))
+    }
+    document.querySelectorAll(".onglets button").forEach((b) => (b.onclick = () => choisir(b.dataset.volet)))
+    choisir(ios ? "ios" : /Android/.test(ua) ? "android" : "pc")
+
+    // les liens : le jeu et le site
+    const jeu = new URL("jouer/", location.href).href
+    const site = new URL("./", location.href).href
+    document.getElementById("url").textContent = jeu.replace(/^https?:\/\//, "")
+    const toast = (t) => { const el = document.getElementById("toast"); el.textContent = t; el.classList.add("vu"); setTimeout(() => el.classList.remove("vu"), 2200) }
+    const copier = async (t) => { try { await navigator.clipboard.writeText(t); toast("Lien copié. Synergie vous remercie pour votre engagement 💜") } catch { prompt("Copiez ce lien :", t) } }
+    document.getElementById("copier").onclick = () => copier(jeu)
+    document.getElementById("partager").onclick = async () => {
+      const donnees = { title: "Ressources Inhumaines", text: "Tu es Ava, l'IA RH d'une start-up qui t'aime. On est une famille 💜", url: site }
+      if (navigator.share) { try { await navigator.share(donnees) } catch {} } else copier(site)
+    }
+  </script>
+</body>
+</html>
