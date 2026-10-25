@@ -7,7 +7,7 @@
   "scope": "./",
   "display": "fullscreen",
   "orientation": "landscape",
-  "background_color": "#111015",
+  "background_color": "#fbfbfc",
   "theme_color": "#111015",
   "icons": [
     { "src": "icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
